@@ -14,6 +14,7 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+
 // using the public folder to store static files eg: images etc
 app.use(express.static("public"));
 
@@ -29,7 +30,31 @@ const articlesSchema = {
 // articles model
 const Article = mongoose.model("Article", articlesSchema);
 
+// get all articles (on localhost:3000/articles)
+app.get("/articles", function(req, res){
+  Article.find(function(err, foundArticles){
+    if (!err) {
+    res.send(foundArticles);
+    } else {
+      res.send(err);
+    }
+  });
+});
 
+// post request for localhost:3000/articles (adding article via postman)
+app.post("/articles", function(req, res){ 
+  const newArticle = new Article({
+    title: req.body.title,
+    content: req.body.content
+  });
+  newArticle.save(function(err){
+    if (!err){
+      res.send("Successfully added a new article");
+    } else {
+      res.send(err);
+    }
+  });
+});
 
 
 // sets app to listen on port 3000
