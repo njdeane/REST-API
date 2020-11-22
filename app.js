@@ -17,6 +17,18 @@ app.use(bodyParser.urlencoded({
 // using the public folder to store static files eg: images etc
 app.use(express.static("public"));
 
+// setting up mongoDB
+mongoose.connect("mongodb://localhost:27017/wikiDB", {useNewUrlParser: true, useUnifiedTopology: true});
+
+// creating schema for articles collection so I can make models 
+const articlesSchema = {
+  title: String,
+  content: String
+};
+
+// articles model
+const Article = mongoose.model("Article", articlesSchema);
+
 
 
 
